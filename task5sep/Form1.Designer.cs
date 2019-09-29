@@ -35,6 +35,8 @@
             this.contextMenuStrip1 = new System.Windows.Forms.ContextMenuStrip(this.components);
             this.headLengthtxt = new System.Windows.Forms.TextBox();
             this.label1 = new System.Windows.Forms.Label();
+            this.label2 = new System.Windows.Forms.Label();
+            this.ComplexPBMbtn = new System.Windows.Forms.RadioButton();
             this.SuspendLayout();
             // 
             // submitbtn1
@@ -85,7 +87,7 @@
             this.headLengthtxt.Location = new System.Drawing.Point(109, 357);
             this.headLengthtxt.Multiline = true;
             this.headLengthtxt.Name = "headLengthtxt";
-            this.headLengthtxt.Size = new System.Drawing.Size(458, 40);
+            this.headLengthtxt.Size = new System.Drawing.Size(227, 40);
             this.headLengthtxt.TabIndex = 5;
             // 
             // label1
@@ -94,11 +96,36 @@
             this.label1.Font = new System.Drawing.Font("Minion Pro", 18F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this.label1.Location = new System.Drawing.Point(109, 317);
             this.label1.Name = "label1";
-            this.label1.Size = new System.Drawing.Size(458, 37);
+            this.label1.Size = new System.Drawing.Size(227, 37);
             this.label1.TabIndex = 6;
             this.label1.Text = "Header Length";
             this.label1.TextAlign = System.Drawing.ContentAlignment.MiddleCenter;
             this.label1.Click += new System.EventHandler(this.label1_Click_1);
+            // 
+            // label2
+            // 
+            this.label2.BackColor = System.Drawing.Color.Goldenrod;
+            this.label2.Font = new System.Drawing.Font("Minion Pro", 15F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.label2.Location = new System.Drawing.Point(342, 317);
+            this.label2.Name = "label2";
+            this.label2.Size = new System.Drawing.Size(227, 37);
+            this.label2.TabIndex = 6;
+            this.label2.Text = "Primary BM Type";
+            this.label2.TextAlign = System.Drawing.ContentAlignment.MiddleCenter;
+            this.label2.Click += new System.EventHandler(this.label1_Click_1);
+            // 
+            // ComplexPBMbtn
+            // 
+            this.ComplexPBMbtn.AutoSize = true;
+            this.ComplexPBMbtn.Font = new System.Drawing.Font("Microsoft Sans Serif", 10.2F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.ComplexPBMbtn.Location = new System.Drawing.Point(342, 357);
+            this.ComplexPBMbtn.Name = "ComplexPBMbtn";
+            this.ComplexPBMbtn.Size = new System.Drawing.Size(102, 24);
+            this.ComplexPBMbtn.TabIndex = 8;
+            this.ComplexPBMbtn.TabStop = true;
+            this.ComplexPBMbtn.Text = "Complex";
+            this.ComplexPBMbtn.UseVisualStyleBackColor = true;
+            this.ComplexPBMbtn.CheckedChanged += new System.EventHandler(this.ComplexPBMbtn_CheckedChanged);
             // 
             // Form1
             // 
@@ -107,6 +134,8 @@
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.BackColor = System.Drawing.Color.SeaGreen;
             this.ClientSize = new System.Drawing.Size(648, 468);
+            this.Controls.Add(this.ComplexPBMbtn);
+            this.Controls.Add(this.label2);
             this.Controls.Add(this.label1);
             this.Controls.Add(this.headLengthtxt);
             this.Controls.Add(this.usernametext);
@@ -129,6 +158,8 @@
         private System.Windows.Forms.ContextMenuStrip contextMenuStrip1;
         private System.Windows.Forms.TextBox headLengthtxt;
         private System.Windows.Forms.Label label1;
+        private System.Windows.Forms.Label label2;
+        private System.Windows.Forms.RadioButton ComplexPBMbtn;
     }
 }
 

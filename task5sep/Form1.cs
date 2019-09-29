@@ -12,8 +12,8 @@ namespace ISO8583MsgParserGenerator
 {
     public partial class Form1 : Form
     {
-        static String msg,msg22;
-        static int j;  //55nimbus
+        static String msg,msg22,nmsg;
+        static int j=0,BMT=0;  //55nimbus
         public Form1()
         {
             InitializeComponent();
@@ -32,19 +32,95 @@ namespace ISO8583MsgParserGenerator
         private void submitbtn1_Click(object sender, EventArgs e)
         {
 
-            msg = this.usernametext.Text;
-            //MessageBox.Show(msg22);
-            //msg = parsedata(msg22);
-            //MessageBox.Show(msg);
+            msg22 = this.usernametext.Text;
+            msg = parsedata(msg22);
             String l = this.headLengthtxt.Text;
             j = Int32.Parse(l);
+            if (this.ComplexPBMbtn.Checked == true)
+            {
+                BMT = 1;
+                nmsg=ComplexBM(msg22);
+            }
             this.Hide();
             input(msg);
             //Form2 ss = new Form2();
             //ss.Show();
+        }
+        static string ComplexBM(string msgFl)
+        {
+            int t = 1, n = msgFl.LastIndexOf('|');
+            String m = null,r=null;
+            while (t <= msgFl.Length)
+            {
+                if (msgFl[t] == '|')
+                {
+                    t++;
+                    while (true)
+                    {
+                        if (t >= n)
+                        {
+                            r = m.Substring(8, 34);
+                            return (r);
+                        };
+                        if (msgFl[t] == '|')
+                        {
+                            break;
+                        };
+                        t++;
+                    }
 
+                }
+                if (msgFl[t] == '|')
+                {
+                    while (true)
+                    {
+                        t = t + 2;
+                        if (msgFl[t] == '|')
+                            break;
+                        m += msgFl[t];
+                        t++;
+                        m += msgFl[t];
+                    }
+                }
+            }
+            r = m.Substring(8, 34);
+            return (r);
+        }
+        static string parsedata(string msgFl)
+        {
+            int t = 1, n = msgFl.LastIndexOf('|');
+            String m = null;
+            while (t <= msgFl.Length)
+            {
+                if (msgFl[t] == '|')
+                {
+                    while (true)
+                    {
+                        t = t + 2;
+                        if (msgFl[t] == '|')
+                            break;
+                        m += msgFl[t];
+                    }
+                }
+                if (msgFl[t] == '|')
+                {
+                    t++;
+                    while (true)
+                    {
+                        if (t >= n)
+                        {
+                            return (m);
+                        };
+                        if (msgFl[t] == '|')
+                        {
+                            break;
+                        };
+                        t++;
+                    }
 
-
+                }
+            }
+            return (m);
         }
         static string Hexcon(string s)
         {
@@ -107,18 +183,28 @@ namespace ISO8583MsgParserGenerator
             return (res1);
 
         }
-      
         static void input(string code)
         {
             string header, mti, primary_bmap1, primary_bmap2, secondary_bmap1, secondary_bmap2;
+            char[] charArr, charArr1=null;
             var Form2 = new Form2();
             header = code.Substring(0, j);//j=12   j+=0
             mti = code.Substring(j, 4);//j=12,4    j+=4
             j += 4;
-            primary_bmap1 = code.Substring(j, 16); //j=16,16   j+=16
-            j += 16;
-            primary_bmap2 = Hexcon(primary_bmap1);
-            char[] charArr = primary_bmap2.ToCharArray();
+            if (BMT==1)
+            {
+                primary_bmap1 = code.Substring(j, 8);
+                j += 8;
+                primary_bmap2 = Hexcon(nmsg.Substring(0,16));
+                charArr = primary_bmap2.ToCharArray();
+            }
+            else
+            {
+                primary_bmap1 = code.Substring(j, 16); //j=16,16   j+=16
+                j += 16;
+                primary_bmap2 = Hexcon(primary_bmap1);
+                charArr = primary_bmap2.ToCharArray();
+            }
             string indexx = null;
             for (int i = 0; i < charArr.Length; i++)
             {
@@ -129,9 +215,20 @@ namespace ISO8583MsgParserGenerator
             }
             if (charArr[0] == '1')
             {
-                secondary_bmap1 = code.Substring(j, 16);   //j=32
-                secondary_bmap2 = Hexcon(secondary_bmap1);
-                char[] charArr1 = secondary_bmap2.ToCharArray();
+                if (BMT == 1)
+                {
+                    secondary_bmap1 = code.Substring(j, 8);   //j=32
+                    j += 8;
+                    secondary_bmap2 = Hexcon(nmsg.Substring(16, 18));
+                    charArr1 = secondary_bmap2.ToCharArray();
+                }
+                else
+                {
+                    secondary_bmap1 = code.Substring(j, 16);   //j=32
+                    j += 16;
+                    secondary_bmap2 = Hexcon(secondary_bmap1);
+                    charArr1 = secondary_bmap2.ToCharArray();
+                }
                 for (int i = 0; i < charArr1.Length; i++)
                 {
                     if (charArr1[i] == '1')
@@ -140,8 +237,7 @@ namespace ISO8583MsgParserGenerator
                     }
 
 
-                }
-                j += 16; //j+=16     j=48
+                }//j+=16     j=48
                 Form2.Initial(header, mti, primary_bmap1, secondary_bmap1);
                 parse(indexx, code);
                 return;
@@ -774,6 +870,16 @@ namespace ISO8583MsgParserGenerator
 
         private void usernametext_TextChanged(object sender, EventArgs e)
         {
+        }
+
+        private void SimplePBMbtn_CheckedChanged(object sender, EventArgs e)
+        {
+
+        }
+
+        private void ComplexPBMbtn_CheckedChanged(object sender, EventArgs e)
+        {
+
         }
 
         private void label1_Click_1(object sender, EventArgs e)
